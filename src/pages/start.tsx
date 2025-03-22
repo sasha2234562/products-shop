@@ -11,17 +11,17 @@ export const Start = () => {
     const products = useSelector<RootState, Card[]>(state => state.products.products);
     const [searchProductsParams, setSearchProductsParams] = useState('');
 
+    useEffect(() => {
+        dispatch(getProductsCards())
+    }, [])
+
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchProductsParams(event.currentTarget.value)
     }
 
     const searchProducts: Card[] = useMemo(() => {
-        return products.filter(item => item.title.toLowerCase().startsWith(searchProductsParams))
+        return products.filter(item => item.title.toLowerCase().startsWith(searchProductsParams));
     }, [products, searchProductsParams])
-
-    useEffect(() => {
-        dispatch(getProductsCards())
-    }, [])
 
     if (!products) {
         return
@@ -29,7 +29,7 @@ export const Start = () => {
     return (
         <main className='flex flex-col gap-8 items-start'>
             <input type="text" placeholder={'Поиск'} value={searchProductsParams} onChange={onChangeHandler}
-                   className='outline-none text-gray-900 border bg-transparent w-full p-2 rounded focus:border-purple-600'/>
+                   className='outline-none text-gray-900 border bg-transparent w-full p-2 rounded focus:border-purple-900'/>
             <section
                 className="gap-4 w-full grid grid-cols-[repeat(auto-fit,minmax(306px,1fr))] justify-start">
                 {searchProducts.map((item) => <CardProduct key={item.id} productCard={item}/>)}
