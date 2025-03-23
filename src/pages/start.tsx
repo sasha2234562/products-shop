@@ -31,9 +31,9 @@ export const Start = () => {
 
     const searchProducts: Card[] = useMemo(() => {
         return products.filter(item => {
-            return item.title.toLowerCase().startsWith(searchProductsParams)
-        }).sort((a, b) => selectedSort === 'plus-price' ? a.price - b.price : a.price + b.price);
-    }, [products, searchProductsParams, selectedSort])
+            return item.title.toLowerCase().startsWith(searchProductsParams);
+        }).sort((a, b) => selectedSort === 'plus-price' ? a.price - b.price : b.price - a.price);
+    }, [products, searchProductsParams, selectedSort]);
 
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -64,9 +64,9 @@ export const Start = () => {
     }
     return (
         <main className='flex flex-col gap-8 items-start'>
-            <div className='flex gap-8 w-full'>
+            <div className='flex gap-8 w-full  mobile'>
                 <Input placeholder={'Поиск'} value={searchProductsParams} onChange={onChangeHandler}/>
-                <FormControl sx={{minWidth: 320}}>
+                <FormControl sx={{minWidth: 300, height: 42}}>
                     <Select
                         value={selectedSort}
                         aria-placeholder={'Сортировка'}
@@ -79,7 +79,7 @@ export const Start = () => {
                 </FormControl>
             </div>
             <section
-                className="gap-4 w-full grid grid-cols-[repeat(auto-fit,minmax(306px,1fr))] justify-start">
+                className="gap-4 w-full grid grid-cols-[repeat(auto-fit,minmax(306px,1fr))] justify-items-center">
                 {searchProducts.map((item) => (
                     <CardProduct key={item.id} selectToBasket={selectProducts.includes(item.id)} productCard={item}
                                  onClickSaveToBasketProduct={onClickSaveToBasketProduct}/>))}

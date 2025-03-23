@@ -27,10 +27,11 @@ export const Basket = () => {
 
     return (
         <main
-            className="gap-4 w-full grid grid-cols-[repeat(auto-fit,minmax(306px,1fr))] justify-items-center">
-            {filterProducts.map((item) => (
+            className="gap-4 w-full grid grid-cols-[repeat(auto-fit,minmax(300px,400px))] justify-center justify-items-center">
+            {filterProducts.length > 0 ?filterProducts.map((item) => (
                 <CardProduct key={item.id} productCard={item} selectToBasket={true}
-                             onClickSaveToBasketProduct={deleteProduct}/>))}
+                             onClickSaveToBasketProduct={deleteProduct}/>))
+            : <h2 className='text-2xl'>К сожалению ваша корзина пуста</h2>}
         </main>
     );
 };
