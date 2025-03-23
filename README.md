@@ -35,7 +35,8 @@ npm run dev
 
 Откройте ваш браузер и перейдите по адресу http://localhost:5174 (или другой порт, если указанный по умолчанию не доступен), чтобы увидеть приложение в действии.
 
-# Ссылка на развернутый проект: https://fantastic-souffle-c3024d.netlify.app
+# Ссылка на развернутый проект:
+###  https://fantastic-souffle-c3024d.netlify.app
 
 ```
 https://fantastic-souffle-c3024d.netlify.app
