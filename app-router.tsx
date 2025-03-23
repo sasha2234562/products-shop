@@ -10,7 +10,7 @@ export const AppRouter = () => (
 		<Routes>
 			<Route element={<Layout/>}>
 				<Route path={'/'} element={<Start/>}/>
-				<Route path={'/product/:id'} element={<Product/>}/>
+				<Route path={'/cart/:id'} element={<Product/>}/>
 				<Route path={'/basket'} element={<Basket/>}/>
 			</Route>
 		</Routes>
