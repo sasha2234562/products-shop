@@ -1,9 +1,8 @@
 import {ChangeEvent, useCallback, useEffect, useMemo, useState} from "react";
-import {Card} from "../bll/redux/reducers/products-reducer.ts";
 import {CardProduct} from "../components/card-product.tsx";
 import {Input} from "../components/input.tsx";
 import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
-import {useGetAllProductsQuery} from "../api/api.ts";
+import {useGetAllProductsQuery, Card} from "../api/api.ts";
 
 function debounce<T extends (...args: any[]) => any>(func: T, delay: number) {
     let timer: number;
