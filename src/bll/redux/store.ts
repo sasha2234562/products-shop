@@ -1,11 +1,13 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {useDispatch} from "react-redux";
-import {productsSlice} from "./reducers/products-reducer.ts";
+import {setupListeners} from "@reduxjs/toolkit/query";
+import {productsApi} from "../../api/api.ts";
 
 export const RootStateReducer = combineReducers({
-    products: productsSlice.reducer
+    [productsApi.reducerPath]: productsApi.reducer,
 })
-export const store = configureStore({reducer: RootStateReducer});
+export const store = configureStore({
+    reducer: RootStateReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(productsApi.middleware),
+});
 
-export type RootState = ReturnType<typeof store.getState>;
-export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
+setupListeners(store.dispatch)

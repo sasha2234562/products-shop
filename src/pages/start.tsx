@@ -1,11 +1,9 @@
 import {ChangeEvent, useCallback, useEffect, useMemo, useState} from "react";
-import {RootState, useAppDispatch} from "../bll/redux/store.ts";
-import {useSelector} from "react-redux";
 import {Card} from "../bll/redux/reducers/products-reducer.ts";
-import {getProductsCards} from "../bll/redux/thunks/get-products-cards.ts";
 import {CardProduct} from "../components/card-product.tsx";
 import {Input} from "../components/input.tsx";
 import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {useGetAllProductsQuery} from "../api/api.ts";
 
 function debounce<T extends (...args: any[]) => any>(func: T, delay: number) {
     let timer: number;
@@ -18,34 +16,36 @@ function debounce<T extends (...args: any[]) => any>(func: T, delay: number) {
 }
 
 export const Start = () => {
-    const dispatch = useAppDispatch();
-    const products = useSelector<RootState, Card[]>(state => state.products.products);
     const [selectedSort, setSelectedSort] = useState('plus-price');
     const [searchProductsParams, setSearchProductsParams] = useState('');
     const [selectProducts, setSelectProducts] = useState<number[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Card[]>([]);
     const storedProducts = localStorage.getItem('products');
+    const {data} = useGetAllProductsQuery()
 
     useEffect(() => {
-        dispatch(getProductsCards());
         if (storedProducts) {
             setSelectProducts(JSON.parse(storedProducts));
             return;
         }
         setSelectProducts([]);
-    }, [dispatch, storedProducts]);
+    }, []);
 
     const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchProductsParams(event.currentTarget.value);
     };
 
     const filterAndSortProducts = useCallback(() => {
-        const filtered = products.filter(item => {
+        if(!data){
+            setFilteredProducts([]);
+            return;
+        }
+        const filtered = data.filter(item => {
             return item.title.toLowerCase().startsWith(searchProductsParams.toLowerCase());
         }).sort((a, b) => selectedSort === 'plus-price' ? a.price - b.price : b.price - a.price);
 
         setFilteredProducts(filtered);
-    }, [products, selectedSort, searchProductsParams]);
+    }, [data, selectedSort, searchProductsParams]);
 
     const debouncedFilterAndSortProducts = useMemo(() => debounce(filterAndSortProducts, 300), [filterAndSortProducts]);
 
@@ -76,7 +76,7 @@ export const Start = () => {
         localStorage.setItem('products', JSON.stringify(newProducts));
     }, [storedProducts]);
 
-    if (!products) {
+    if (!data) {
         return null;
     }
 
